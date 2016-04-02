@@ -1,27 +1,50 @@
 var fileName = './README.md';
 var dirName = './new_dir';
 console.log('Application going to read ' + fileName);
-// fs.readFile(fileName, function(err, src) {
-//   console.log('File ' + fileName + ' size ' + src.length);
-// });
 
-fs.readdir(".", function(err, files) {
-  console.dir(files);
-})
+setInterval(function(){
+  fs.readFile(fileName, function(err, src) {
+    if (!err) {
+      console.log('File ' + fileName + ' size ' + src.length);
+    }
+  });
+}, 2000);
 
-fs.access(fileName, fs.F_OK, function(err) {
-  console.log(err ? 'file does not exist' : 'file is OK');
-})
 
+setTimeout(function(){
+  fs.readdir(".", function(err, files) {
+    if (!err) {
+      console.log('content of the dir:' + files);
+    }
+  });
+}, 1500);
+
+setInterval(function(){
+  fs.access(fileName, fs.F_OK, function(err) {
+    console.log(err ? 'file does not exist' : 'file is OK');
+  });
+}, 3000);
 
 setTimeout(()=>{
   fs.mkdir(dirName, (err)=>{
-    console.log(err);
+    if (!err) {
+      console.log('dir is created');
+    }
   });
-}, 100);
+}, 2000);
 
 setTimeout(()=>{
   fs.rmdir(dirName, (err)=>{
-    console.log(err);
+    if (!err) {
+      console.log('dir is deleted')
+    }
   });
-}, 500);
+}, 3500);
+
+setInterval(function(){
+  fs.appendFile("new_file.txt", "out_inf", {flag: 'a'}, (err) => {
+    if(err) {
+      throw err;
+    }
+  });
+}, 3000);
